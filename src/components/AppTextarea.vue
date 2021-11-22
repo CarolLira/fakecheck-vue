@@ -1,21 +1,43 @@
 <template>
-  <textarea name="news" id="" cols="30" rows="10" :placeholder="text"></textarea>
+  <textarea
+    name="news"
+    id=""
+    cols="30"
+    rows="10"
+    :placeholder="text"
+    v-model="value"
+  ></textarea>
 </template>
 
 <script>
 export default {
-  name: 'AppTextarea',
+  name: "AppTextarea",
   props: {
     text: {
       type: String,
       required: true,
+    },
+    modelValue: {
+      type: String,
     }
-  }
+  },
+  emits: ['update:modelValue'],
+  computed: {
+    value: {
+      get() {
+        return this.modelValue;
+      },
+      set(value) {
+        this.$emit('update:modelValue', value);
+      },
+    },
+  },
+  
 };
 </script>
 
 <style scoped lang="scss">
-@import '../../styles/index';
+@import "../../styles/index";
 
 textarea {
   width: 100%;
@@ -29,5 +51,4 @@ textarea {
 /* @media only screen (max-width: $small) {
 
 } */
-
 </style>

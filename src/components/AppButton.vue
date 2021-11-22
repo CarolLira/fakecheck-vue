@@ -1,14 +1,16 @@
 <template>
-  <button class="button">{{ text }}</button>
+  <button class="button" @click="$emit('buttonAction', $event)">
+    {{ text }}
+  </button>
 </template>
 
 <script>
 export default {
-  name: 'AppButton',
+  name: "AppButton",
   props: {
     type: {
       type: String,
-      default: 'button',
+      default: "button",
     },
     text: {
       type: String,
@@ -19,7 +21,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '../../styles/index';
+@import "../../styles/index";
 
 .button {
   width: 100%;
@@ -29,10 +31,11 @@ export default {
   background-color: $cerulean-light;
   color: #fffcee;
   font-weight: 500;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   box-shadow: 0 4px 8px rgba(30, 60, 90, 0.2);
   transition: all 0.3s;
   justify-self: center;
+  margin: 1rem;
 
   &:hover {
     filter: brightness(0.8);

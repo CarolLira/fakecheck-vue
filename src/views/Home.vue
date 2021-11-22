@@ -4,36 +4,58 @@
     <main>
       <div class="home__form-container">
         <AppDescription />
-        <AppForm>
-          <AppTextarea text="Cole sua notícia aqui" />
+        <form class="news-form" @submit.prevent="sendNews">
+          <AppTextarea v-model="news" text="Cole sua notícia aqui" />
           <AppButton text="Checar" />
-        </AppForm>
+          {{ verification }}
+        </form>
       </div>
     </main>
   </div>
 </template>
 
 <script>
-import AppHeader from '@/components/AppHeader.vue';
-import AppDescription from '@/components/AppDescription.vue';
-import AppForm from '@/components/AppForm.vue';
-import AppTextarea from '@/components/AppTextarea.vue';
-import AppButton from '@/components/AppButton.vue';
+import axios from 'axios';
+import AppHeader from "@/components/AppHeader.vue";
+import AppDescription from "@/components/AppDescription.vue";
+// import AppForm from "@/components/AppForm.vue";
+import AppTextarea from "@/components/AppTextarea.vue";
+import AppButton from "@/components/AppButton.vue";
 
 export default {
-  name: 'Home',
+  name: "Home",
   components: {
     AppHeader,
     AppDescription,
-    AppForm,
+    // AppForm,
     AppTextarea,
     AppButton,
   },
+  data() {
+    return {
+      news: "",
+      verification: "",
+    };
+  },
+  methods: {
+    sendNews() {
+      if (this.news) {
+        this.news.replace(/["]/g, " ");
+        this.news.replace(/[']/g, " ");
+        axios.post('http://localhost:5000/', { "texto": this.news})
+        .then((response) => {
+          if (response.data) {
+            this.verification = response.data == 'True' ? 'Verdadeira' : 'Falsa';
+          }
+        })
+      }
+    }
+  }
 };
 </script>
 
 <style lang="scss" scoped>
-@import '../../styles/index';
+@import "../../styles/index";
 
 main {
   padding: 2.5rem;
@@ -49,4 +71,25 @@ main {
     }
   }
 }
+
+.news-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  form {
+    width: 100%;
+    display: grid;
+    grid-template-rows: auto;
+    row-gap: 15px;
+  }
+}
+
+@media only screen and (min-width: $medium) {
+  .news-form {
+    width: 70%;
+  }
+}
+
 </style>
